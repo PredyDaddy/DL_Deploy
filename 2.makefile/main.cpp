@@ -18,6 +18,6 @@ int main()
     std::cout << a << " + " << b << " = " << c << std::endl;
 
     cudaFree(d_c);
-    
+
     return 0;
 }

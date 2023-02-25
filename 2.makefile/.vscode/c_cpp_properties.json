@@ -1,0 +1,71 @@
+// 纯nvcc的
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "compilerPath": "/usr/local/cuda/bin/nvcc",
+            "intelliSenseMode": "linux-gcc-x64",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/usr/local/cuda-11.7/include/**"
+              ],
+            "defines": [],
+            "browse": {
+                "path": [
+                    "${workspaceFolder}",
+                    "/usr/local/cuda/include/**"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            },
+            "cStandard": "c17",
+            "cppStandard": "c++14"
+        }
+    ],
+    "version": 4
+}
+// 可以选择nvcc和g++的
+// {
+//     "configurations": [
+//         {
+//             "name": "g++",
+//             "intelliSenseMode": "gcc-x64",
+//             "compilerPath": "/usr/bin/g++",
+//             "includePath": [
+//                 "${workspaceFolder}/**"
+//             ],
+//             "defines": [],
+//             "compilerArgs": [
+//                 "-Wall"
+//             ],
+//             "cStandard": "gnu11",
+//             "cppStandard": "c++17"
+//         },
+//         {
+//             "name": "nvcc",
+//             "intelliSenseMode": "clang-x64",
+//             "compilerPath": "/usr/local/cuda-11.7/bin/nvcc",
+//             "includePath": [
+//                 "${workspaceFolder}/**"
+//             ],
+//             "defines": [],
+//             "compilerArgs": [
+//                 "--std=c++11",
+//                 "-gencode=arch=compute_50,code=sm_50",
+//                 "-gencode=arch=compute_52,code=sm_52",
+//                 "-gencode=arch=compute_60,code=sm_60",
+//                 "-gencode=arch=compute_61,code=sm_61",
+//                 "-gencode=arch=compute_75,code=sm_75",
+//                 "-gencode=arch=compute_80,code=sm_80",
+//                 "-gencode=arch=compute_86,code=sm_86",
+//                 "-O2",
+//                 "-c",
+//                 "--compiler-options",
+//                 "'-fPIC'"
+//             ],
+//             "cStandard": "c11",
+//             "cppStandard": "c++14"
+//         }
+//     ],
+//     "version": 4
+// }
