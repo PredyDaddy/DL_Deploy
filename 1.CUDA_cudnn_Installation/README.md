@@ -164,4 +164,10 @@ int main()
 7. 或者使用这个指定版本的安装sudo apt-get install libcudnn8=8.6.0.163-1+cuda11.7 libcudnn8-dev=8.6.0.163-1+cuda11.7
 - nvcc --version(查看版本)
 8. 总结: 先用nvdia-smi查看当前所支持的最高CUDA Tookilt, 再去cudnn查看版本，安装对应的cudnn和CUDA，最后通过测试
-
+9. 成功案例
+```
+predy@DESKTOP-IU6IR4M:~/DL_Deploy/1.CUDA_cudnn_Installation$ cat /usr/include/cudnn_version.h | grep CUDNN_MAJOR -A 2
+#define CUDNN_MAJOR 8
+#define CUDNN_MINOR 6
+#define CUDNN_PATCHLEVEL 0
+```
