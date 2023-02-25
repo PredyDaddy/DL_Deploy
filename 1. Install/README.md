@@ -41,6 +41,7 @@ Fri Feb 24 15:48:08 2023
 5. 不要安装驱动
 6. 整体我参考了这两篇帖子
 - https://blog.csdn.net/my__blog/article/details/125720601
+- https://blog.csdn.net/weixin_42760399/article/details/122579073
 - https://mp.weixin.qq.com/s/pBeAUqqIXLdn8ggv30c0hA
 7. 下载CUDA
 # 2. 在vscode的环境下试验CUDA
@@ -149,5 +150,17 @@ int main()
     return 0;
 }
 ```
-
-
+# 3. 安装Cudnn
+1. 官网安装(https://developer.nvidia.com/rdp/cudnn-archive)
+2. 把包放到文件夹下面
+3. cd /home/predy/Github/DL_Deploy/1.Install
+4. sudo dpkg -i cudnn-local-repo-ubuntu1804-8.6.0.163_1.0-1_amd64.deb
+- 出现公钥问题: sudo apt-key add /var/cudnn-local-repo-ubuntu1804-8.6.0.163/7fa2af80.pub
+5. sudo apt-get update (我出现的问题，有两个仓库的公钥无法验证)
+- sudo cp /var/cudnn-local-repo-ubuntu1804-8.5.0.96/cudnn-local-7B49EDBC-keyring.gpg /usr/share/keyrings/
+- sudo apt-key adv --fetch-keys https://apt.kitware.com/keys/kitware-archive-latest.asc
+- 再次运行 sudo apt-get update
+6. sudo apt-get install libcudnn8-dev(自动安装)
+7. 或者使用这个指定版本的安装sudo apt-get install libcudnn8=8.6.0.163-1+cuda11.7 libcudnn8-dev=8.6.0.163-1+cuda11.7
+- nvcc --version(查看版本)
+8. 总结: CUDA 版本有对应的cudnn版本，然后
