@@ -163,4 +163,4 @@ int main()
 6. sudo apt-get install libcudnn8-dev(自动安装)
 7. 或者使用这个指定版本的安装sudo apt-get install libcudnn8=8.6.0.163-1+cuda11.7 libcudnn8-dev=8.6.0.163-1+cuda11.7
 - nvcc --version(查看版本)
-8. 总结: CUDA 版本有对应的cudnn版本，然后
+8. 总结: CUDA 版本有对应的cudnn版本，然后 asdas asdasdasasdas
