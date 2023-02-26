@@ -5,7 +5,7 @@ cpp_objs := $(subst src/,objs/,$(cpp_objs))
 
 # 定义cu源码路径，并转换为objs目录先的cuo文件
 # 如果cpp文件和cu名字一样，把.o换成.cuo
-cu_srcs := $(shell find src -name "*.cu")   # 全部src下的*.cu存入变量cu_srcs
+cu_srcs := $(shell find src -name "*.cu")    # 全部src下的*.cu存入变量cu_srcs
 cu_objs := $(patsubst %.cu,%.cuo,$(cu_srcs)) # cu_srcs中全部.cu换成.o
 cu_objs := $(subst src/,objs/,$(cu_objs))    # cu_objs src/换成objs/
 
@@ -24,15 +24,10 @@ cpp_compile_flags := -m64 -fPIC -g -O0 -std=c++11
 cu_compile_flags := -m64 -g -O0 -std=c++11
 
 # 对头文件, 库文件，目标统一增加 -I,-L-l
-# -L 指定链接时查找的目录
-# -l 指定链接的目标名称，符合libname.so -lname 规则
-# -I 指定编译时头文件查找目录
-# run path
 rpath         := $(foreach item,$(link_librarys),-Wl,-rpath=$(item))
 include_paths := $(foreach item,$(include_paths),-I$(item))
 library_paths := $(foreach item,$(library_paths),-L$(item))
 link_librarys := $(foreach item,$(link_librarys),-l$(item))
-
 
 # 合并选项
 # 合并完选项后就可以给到编译方式里面去了
