@@ -7,8 +7,7 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/usr/local/cuda-11.7/include/**"
-              ],
-              
+            ],
             "defines": [],
             "browse": {
                 "path": [
@@ -19,7 +18,8 @@
                 "databaseFilename": ""
             },
             "cStandard": "c17",
-            "cppStandard": "c++14"
+            "cppStandard": "c++14",
+            "configurationProvider": "ms-vscode.makefile-tools"
         }
     ],
     "version": 4
