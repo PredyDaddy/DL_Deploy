@@ -48,10 +48,6 @@ __global__ void compute(float* a, float* b, float* c)
     c[position] = a[position] * b[position];
 }
 
-__device__ float sigmoid(float sigmoid)
-{
-    return 1 / (1 + exp(-value));
-}
 
 int main()
 {
