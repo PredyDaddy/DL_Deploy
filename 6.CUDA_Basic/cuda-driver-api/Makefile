@@ -1,22 +1,15 @@
+# 1.参数定义
 cc        := g++
 name      := pro
 workdir   := workspace
 srcdir    := src
 objdir    := objs
-defined   := PROD=\"sxai\"
 stdcpp    := c++11
-pwd       := $(abspath .)
 cuda_home := /home/ubuntu/.local/lib/python3.8/site-packages/trtpy/trt8cuda112cudnn8
-cpp_pkg   := /home/ubuntu/.local/lib/python3.8/site-packages/trtpy/cpp-packages
-trtpro_inc := /home/ubuntu/.local/lib/python3.8/site-packages/trtpy/include
-trtpro_lib := /home/ubuntu/.local/lib/python3.8/site-packages/trtpy/trt8cuda112cudnn8/py38
 syslib    := /home/ubuntu/.local/lib/python3.8/site-packages/trtpy/lib
 cuda_arch := 
-run_args  := 
+nvcc      := $(cuda_home)/bin/nvcc -ccbin=$(cc)
 
-# 导出你的环境变量值，可以在程序中使用，该功能还可以写成例如：
-# export LD_LIBRARY_PATH=xxxxx，作用与你在终端中设置是一样的
-export workdir srcdir objdir pwd
 
 # 定义cpp的路径查找和依赖项mk文件
 cpp_srcs := $(shell find $(srcdir) -name "*.cpp")
@@ -31,33 +24,21 @@ cu_objs := $(cu_objs:$(srcdir)/%=$(objdir)/%)
 cu_mk   := $(cu_objs:.cu.o=.cu.mk)
 
 # 定义opencv和cuda需要用到的库文件
-link_opencv    := #opencv_core opencv_imgproc opencv_imgcodecs
-link_cuda      := cudart cudnn
-link_trtpro    := #trtpro protobuf
-link_tensorRT  := nvinfer #nvparsers nvinfer_plugin
+link_cuda      := cuda
+link_trtpro    := 
+link_tensorRT  := 
 link_sys       := stdc++ dl
-link_librarys  := $(link_opencv) $(link_cuda) $(link_tensorRT) $(link_sys) $(link_trtpro)
-
-# 定义cuda和opencv的库路径
-nvcc              := $(cuda_home)/bin/nvcc -ccbin=$(cc)
-include_cuda      := $(cuda_home)/include/cuda
-include_tensorRT  := $(cuda_home)/include/tensorRT
-include_protobuf  := $(cuda_home)/include/protobuf
-include_opencv    := #${cpp_pkg}/opencv4.2/include
-
-lib_all       := $(cuda_home)/lib64 $(trtpro_lib) $(syslib)
-lib_opencv    := #$(cpp_pkg)/opencv4.2/lib
+link_librarys  := $(link_cuda) $(link_tensorRT) $(link_sys)
 
 # 定义头文件路径，请注意斜杠后边不能有空格
 # 只需要写路径，不需要写-I
-include_paths := src    \
-    $(include_cuda)     \
-	$(include_tensorRT) \
-	$(trtpro_inc)       \
-	$(include_opencv)
+include_paths := src              \
+    $(cuda_home)/include/cuda     \
+	$(cuda_home)/include/tensorRT \
+	$(cuda_home)/include/protobuf
 
 # 定义库文件路径，只需要写路径，不需要写-L
-library_paths := $(lib_all) $(lib_opencv)
+library_paths := $(cuda_home)/lib64 $(syslib)
 
 # 把library path给拼接为一个字符串，例如a b c => a:b:c
 # 然后使得LD_LIBRARY_PATH=a:b:c
@@ -69,18 +50,21 @@ run_paths     := $(foreach item,$(library_paths),-Wl,-rpath=$(item))
 include_paths := $(foreach item,$(include_paths),-I$(item))
 library_paths := $(foreach item,$(library_paths),-L$(item))
 link_librarys := $(foreach item,$(link_librarys),-l$(item))
-defined       := $(foreach item,$(defined),-D$(item))
 
 # 如果是其他显卡，请修改-gencode=arch=compute_75,code=sm_75为对应显卡的能力
 # 显卡对应的号码参考这里：https://developer.nvidia.com/zh-cn/cuda-gpus#compute
 # 如果是 jetson nano，提示找不到-m64指令，请删掉 -m64选项。不影响结果
-cpp_compile_flags := -std=$(stdcpp) -w -g -O0 -m64 -fPIC -fopenmp -pthread $(defined)
-cu_compile_flags  := -std=$(stdcpp) -w -g -O0 -m64 $(cuda_arch) -Xcompiler "$(cpp_compile_flags)" $(defined)
+cpp_compile_flags := -std=$(stdcpp) -w -g -O0 -m64 -fPIC -fopenmp -pthread
+cu_compile_flags  := -std=$(stdcpp) -w -g -O0 -m64 $(cuda_arch) -Xcompiler "$(cpp_compile_flags)"
 link_flags        := -pthread -fopenmp -Wl,-rpath='$$ORIGIN'
 
 cpp_compile_flags += $(include_paths)
 cu_compile_flags  += $(include_paths)
 link_flags        += $(library_paths) $(link_librarys) $(run_paths)
+
+
+
+# 2.执行语句的规则
 
 # 如果头文件修改了，这里的指令可以让他自动编译依赖的cpp或者cu文件
 ifneq ($(MAKECMDGOALS), clean)
@@ -128,4 +112,4 @@ clean :
 .PHONY : clean run $(name)
 
 # 导出依赖库路径，使得能够运行起来
-export LD_LIBRARY_PATH:=$(LD_LIBRARY_PATH):$(library_path_export)
+export LD_LIBRARY_PATH:=$(library_path_export)

@@ -8,4 +8,12 @@
 # 2. .vscode文件夹下面的文件
 1.  下次直接复制就好了
 
-# 3. makefile: 从编译器的角度编译代码
+# 3. g++: 从编译器的角度编译代码
+
+# 4. 从零开始搭建自己的CUDA编程Makefile模板
+
+# 5. CUDA编程的基础Grid Block 
+
+# 6. CUDA Driver Runtime Api
+
+# 7. 

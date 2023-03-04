@@ -34,6 +34,9 @@
         "ratio": "cpp",
         "tuple": "cpp",
         "istream": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "future": "cpp",
+        "system_error": "cpp",
+        "__locale": "cpp"
     }
 }
