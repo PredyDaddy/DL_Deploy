@@ -21,8 +21,27 @@
 2.2 C++声明和实现的区别
 3. C++编译过程
 4. C++链接过程
-# 4. 从零开始搭建自己的CUDA编程Makefile模板
 
+# 4. 从零开始搭建自己的CUDA编程Makefile模板
+学习使用maikefile建立自己的工程模板
+1. Makefile初探
+1.1 makefile基本语法(够用就行)
+1.2 代码域: 变量定义域，依赖项定义域，command(shell语法)
+1.3 基础语法
+1.4 写一个小demo
+1.5 逐行解释这个小demo
+2. 往下走
+3. 完整学习整个makefile文件
+3.1. 定义源码路径
+3.2 定义名称参数
+3.3 定义头文件，库文件和链接目标
+3.4 定义编译选项
+3.5 合并选项
+3.6 把合并后的选项给到编译器选项
+3.7 定义cpp cuda编译方式
+3.8 在workspace下编译出可执行文件
+3.9定义伪标签， 作为指令
+3.10 完整的makefile文件
 # 5. CUDA编程的基础Grid Block 
 
 # 6. CUDA Driver Runtime Api
