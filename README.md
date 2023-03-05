@@ -25,8 +25,8 @@
 # 4. 从零开始搭建自己的CUDA编程Makefile模板
 学习使用maikefile建立自己的工程模板
 1. Makefile初探
-1.1 makefile基本语法(够用就行)
-1.2 代码域: 变量定义域，依赖项定义域，command(shell语法)
+2. makefile基本语法(够用就行)
+3. 代码域: 变量定义域，依赖项定义域，command(shell语法)
 1.3 基础语法
 1.4 写一个小demo
 1.5 逐行解释这个小demo
