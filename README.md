@@ -27,23 +27,34 @@
 1. Makefile初探
 2. makefile基本语法(够用就行)
 3. 代码域: 变量定义域，依赖项定义域，command(shell语法)
-1.3 基础语法
-1.4 写一个小demo
-1.5 逐行解释这个小demo
-2. 往下走
-3. 完整学习整个makefile文件
-3.1. 定义源码路径
-3.2 定义名称参数
-3.3 定义头文件，库文件和链接目标
-3.4 定义编译选项
-3.5 合并选项
-3.6 把合并后的选项给到编译器选项
-3.7 定义cpp cuda编译方式
-3.8 在workspace下编译出可执行文件
-3.9定义伪标签， 作为指令
-3.10 完整的makefile文件
+4. 基础语法
+5. 写一个小demo
+6. 逐行解释这个小demo
+7. 往下走
+8. 完整学习整个makefile文件
+9. 定义源码路径
+10. 定义名称参数
+11. 定义头文件，库文件和链接目标
+12. 定义编译选项
+13. 合并选项
+14. 把合并后的选项给到编译器选项
+15. 定义cpp cuda编译方式
+16. 在workspace下编译出可执行文件
+17. 定义伪标签， 作为指令
+18. 完整的makefile文件
 # 5. CUDA编程的基础Grid Block 
 
 # 6. CUDA Driver Runtime Api
+1. 为什么学习TensorRT需要学习CUDA编程
+2. 先验知识:
+3. 为什么要学习Driver-API?
+4. CUDA驱动API-初始化: cuInit
+4. cuInit案例完整代码
+5. CuInit案例解析
+- 字符串的复习
+- CUresult
+- CUresult CUDAAPI cuDriverGetVersion(int *driverVersion);
+- CUresult CUDAAPI cuDeviceGetName(char *name, int len, CUdevice dev);
+- 不带Cuinit的整体
+- 带Cuinit的整体结构
 
-# 7. 
