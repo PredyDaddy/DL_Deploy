@@ -58,3 +58,9 @@
 - 不带Cuinit的整体
 - 带Cuinit的整体结构
 
+# 7. CUDA 驱动API, 检查功能
+1. 案例(Cuda-Driver API 1.2)
+2. 完善check功能(Cuda-Driver API 1.3)
+3. 完善版本的整体解读
+4. 通过这个案例复习宏定义
+5. 完整自己理解注释版
