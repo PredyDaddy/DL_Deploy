@@ -64,3 +64,9 @@
 3. 完善版本的整体解读
 4. 通过这个案例复习宏定义
 5. 完整自己理解注释版
+# 8. CUDA 驱动API, 检查功能 CUcontext上下文管理
+1. CUcontext上下文管理
+2. 从两段代码看context的效率
+3. 还是复杂，继续简化 cuDevicePrimaryCtxRetain
+4. 代码
+5. 整体代码流程解析
