@@ -35,3 +35,5 @@ cuPopCurrent(context);
 # 3. 还是复杂，继续简化
 1. 基本上高频的使用是一个线程固定访问一个显卡，只使用一个context，所以Create, push, pop这一套流程看起来就很复杂了
 2. 推出了cuDevicePrimaryCtx
+3. fkldsafbsdakfbkhsdabfhksdbakfldsbalkfjbdsajklfdslkjfbdsa
+4. 
