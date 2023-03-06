@@ -44,7 +44,7 @@
 18. 完整的makefile文件
 # 5. CUDA编程的基础Grid Block 
 
-# 6. CUDA Driver Runtime Api
+# 6. CUDA Driver Api
 1. 为什么学习TensorRT需要学习CUDA编程
 2. 先验知识:
 3. 为什么要学习Driver-API?
