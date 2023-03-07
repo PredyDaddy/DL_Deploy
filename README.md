@@ -70,3 +70,11 @@
 3. 还是复杂，继续简化 cuDevicePrimaryCtxRetain
 4. 代码
 5. 整体代码流程解析
+
+# 9. CUDA 驱动API, 内存分配
+1. 思路
+2. 整体代码
+3. CUDdeviceptr以及复习数据结构
+4. 锁页内存
+5. cuMemset
+6. 释放锁页内存
