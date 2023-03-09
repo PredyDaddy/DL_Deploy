@@ -1,3 +1,8 @@
+# 前言
+在CUDA项目中，context可以用来管理设备资源，包括分配和释放内存、启动和停止CUDA核函数等。每个CUDA核函数都需要在一个特定的context中运行，而一个context可以同时被多个线程使用。
+
+使用context可以避免线程之间的资源冲突和数据竞争问题，并提高GPU的利用率。同时，通过context可以更好地控制并发任务的执行，提高程序的执行效率。因此，在CUDA项目中，使用context是非常重要的。
+
 # 1. CUcontext上下文管理
 1. context是一种上下文，关联对GPU的所有操作
 2. context与一块显卡关联，一个显卡可以被多个context关联

@@ -92,6 +92,7 @@ typedef unsigned long long CUdeviceptr;
 
 # 3. 锁页内存
 - 专门供设备访问的主机内存
+- 锁页内存的特性也保证了这些内存不会被操作系统或者其他进程回收或者交换到磁盘上，从而保证了数据的安全性和一致性。GPU可以通过DMA（Direct Memory Access）直接从锁页内存中读取数据，而CPU则不能直接访问锁页内存，需要使用GPU作为中介进行访问
 - 代码
 ```cpp
 float* host_page_locked_memory = nullptr;
