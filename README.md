@@ -78,3 +78,9 @@
 4. 锁页内存
 5. cuMemset
 6. 释放锁页内存
+
+# 10. CUDA RunTime API 2.1 Hello CUDA
+1. CUDA Driver API和CUDA Runtime API
+2. 两种API的区别
+3. 第一个CUDA RunTime API 程序Hello CUDA
+4. 分解这个案例
