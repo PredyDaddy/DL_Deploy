@@ -1,6 +1,8 @@
 # 1. 前言
 1. 主要理解pinned memory、global memory、shared memory即可
 
+global memory是GPU显存，用于存储设备上的数据。pageable memory是CPU内存，它是一种标准的内存分配方式，用于存储CPU的数据。pinned memory也是CPU内存，但是它是一种特殊的内存分配方式，它在分配时直接将内存锁定在物理内存中，这样可以避免CPU将内存交换到磁盘上，从而提高内存访问速度。pinned memory一般用于通过DMA将数据从CPU内存传输到GPU显存中，因为DMA需要直接访问物理内存，而不能访问操作系统的虚拟内存。
+
 # 2. 主机内存
 1. 主机内存很多名字: CPU内存，pinned内存，host memory，这些都是储存在内存条上的
 2. Pageable Memory(可分页内存) + Page lock Memory(页锁定内存) 共同组成内存
@@ -40,30 +42,38 @@ bool __check_cuda_runtime(cudaError_t code, const char* op, const char* file, in
     return true;
 }
 
-int main(){
-
+int main()
+{
     int device_id = 0;
-    checkRuntime(cudaSetDevice(device_id));
+    cudaSetDevice(device_id); // 如果不写device_id = 0
 
-    // 分配global memory
+    // 分配global memory，也就是GPU上的显存
     float *memory_device = nullptr;
-    checkRuntime(cudaMalloc(&memory_device, 100 * sizeof(float))); // pointer to device
+    checkRuntime(cudaMalloc(&memory_device, 100 * sizeof(float))); 
 
-    // 分配pageable memory
-    float* memory_host = new float[100];
-    memory_host[2] = 520.25;
-    checkRuntime(cudaMemcpy(memory_device, memory_host, sizeof(float) * 100, cudaMemcpyHostToDevice)); // 返回的地址是开辟的device地址，存放在memory_device
+    // 分配pageable memory, 这个是在host上，没有API，用new delete管理
+    float *memory_host = new float[100];
+    memory_host[2] = 1000;
+    checkRuntime(cudaMemcpy(memory_device, memory_host, 100 * sizeof(float), cudaMemcpyHostToDevice));
 
-    // 分配pinned memory page locked memory
-    float* memory_page_locked = nullptr;
-    checkRuntime(cudaMallocHost(&memory_page_locked, 100 * sizeof(float))); // 返回的地址是被开辟的pin memory的地址，存放在memory_page_locked
-    checkRuntime(cudaMemcpy(memory_page_locked, memory_device, sizeof(float) * 100, cudaMemcpyDeviceToHost)); // 
+    // 分配pinned memory 
+    float *memory_page_locked = nullptr;
+    cudaMallocHost(&memory_page_locked, 100 * sizeof(float));
+    cudaMemcpy(memory_page_locked, memory_device, 100 * sizeof(float), cudaMemcpyDeviceToHost);
 
-    printf("%f\n", memory_page_locked[2]);
-    checkRuntime(cudaFreeHost(memory_page_locked));
-    delete [] memory_host;
-    checkRuntime(cudaFree(memory_device)); 
+    // 验证是否真的成功的把pageable locked memory 的改变，传给了设备deivce, 再从设备传给了Host
+    // 这里查看Host
+    printf("主机上的页锁定内存: %f\n", memory_page_locked[2]);
 
+    // 这个会报错的由于memory_device是在GPU上分配的显存，不能直接访问其地址来读取或写入数据
+    // printf("显卡上的memory device内存: %f\n", memory_device[2]);
+    
+
+
+    // 释放内存, 不同内存的释放
+    delete[] memory_host;
+    cudaFreeHost(memory_page_locked);
+    cudaFree(memory_device);
     return 0;
 }
 ```
