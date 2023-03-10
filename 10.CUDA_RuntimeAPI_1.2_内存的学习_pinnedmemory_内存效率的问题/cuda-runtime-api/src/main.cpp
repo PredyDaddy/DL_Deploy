@@ -16,10 +16,10 @@ bool __check_cuda_runtime(cudaError_t code, const char* op, const char* file, in
     return true;
 }
 
-int main(){
-
+int main()
+{
     int device_id = 0;
-    checkRuntime(cudaSetDevice(device_id));
+    cudaSetDevice(device_id); // 如果不写device_id = 0
 
     // 分配global memory
     float *memory_device = nullptr;
