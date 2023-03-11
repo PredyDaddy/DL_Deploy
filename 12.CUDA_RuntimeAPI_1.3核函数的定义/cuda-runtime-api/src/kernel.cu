@@ -36,9 +36,8 @@ __host__ void test_print(const float* pdata, int ndata){
     // <<<gridDim, blockDim, bytes_of_shared_memory, stream>>>
     dim3 gridDim;
     dim3 blockDim;
-
     // 总线程数
-    int nthreads = y * grgridDim.x * gridDim.idDim.z * blockDim.x * blockDim.y * blockDim.z;
+    int nthreads = gridDim.x * gridDim.y * gridDim.z * blockDim.x * blockDim.y * blockDim.z;
 
     // 为什么补nthreads = 10; ?
     // 我们会遇到多维度的问题，
@@ -47,7 +46,7 @@ __host__ void test_print(const float* pdata, int ndata){
     // blockDim(1024, 64, 64) blockDim.x * blockDim.y * blockDim.z <= 1024;
 
     // nullptr这里是默认流，想要异步操作就放个stream
-    test_print_kernel<<<dim3(1), dim3(ndata), 0, nullptr>>>(pdata, ndata);
+    test_print_kernel<<<dim3(1), dim3(20), 0, nullptr>>>(pdata, ndata);
 
     // test_print_kernel<<<1, ndata, 0, nullptr>>>(pdata, ndata);
 
