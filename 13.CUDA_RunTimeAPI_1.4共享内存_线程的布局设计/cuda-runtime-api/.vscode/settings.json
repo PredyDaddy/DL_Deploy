@@ -39,7 +39,6 @@
         "future": "cpp",
         "system_error": "cpp",
         "__config": "cpp",
-        "__nullptr": "cpp",
-        "cmath": "cpp"
+        "__nullptr": "cpp"
     }
 }
