@@ -38,6 +38,7 @@ int main(){
     float* memory_page_locked = nullptr;
     checkRuntime(cudaMallocHost(&memory_page_locked, 100 * sizeof(float)));
     checkRuntime(cudaMemcpyAsync(memory_page_locked, memory_device, sizeof(float) * 100, cudaMemcpyDeviceToHost, stream)); // 异步复制操作，主线程不需要等待复制结束才继续
+    printf("%f\n", memory_page_locked[2]);
     checkRuntime(cudaStreamSynchronize(stream));
     
     printf("%f\n", memory_page_locked[2]);
