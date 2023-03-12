@@ -84,3 +84,22 @@
 2. 两种API的区别
 3. 第一个CUDA RunTime API 程序Hello CUDA
 4. 分解这个案例
+
+# 11. CUDA RunTime API 2.2 Stream
+1. 流的定义
+2. 同步和异步
+3. 注意的地方
+4. 代码案例
+
+# 12. CUDA RunTime API 2.2 kernel function
+1. 核函数的定义
+2. main.cpp文件及详细解释
+3. kernel.cu文件及其详细解释
+
+# 13. CUDA RunTime API 2.3 shared_memeory, shared_value
+1. 共享内存的引入
+2. CU文件
+3. cpp文件
+4. 代码解析解析
+5. demo1(静态共享内存和动态共享内存)
+6. demo2(共享变量)
