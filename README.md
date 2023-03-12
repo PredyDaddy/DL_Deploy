@@ -104,4 +104,10 @@
 5. demo1(静态共享内存和动态共享内存)
 6. demo2(共享变量)
 
-# 14. 
+# 14. CUDA_Run_Time_API_thread_layout线程布局
+1. 知识点
+2. 图解知识点
+3. main.cpp文件
+4. cu文件
+5. 代码拆解
+6. cu文件解读
