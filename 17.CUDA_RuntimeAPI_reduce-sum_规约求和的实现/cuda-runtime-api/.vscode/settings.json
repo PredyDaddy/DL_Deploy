@@ -78,6 +78,10 @@
         "climits": "cpp",
         "__bit_reference": "cpp",
         "__memory": "cpp",
-        "locale": "cpp"
+        "locale": "cpp",
+        "__atomic_generated": "cpp",
+        "__mutex_base": "cpp",
+        "__string": "cpp",
+        "__undef_macros": "cpp"
     }
 }
