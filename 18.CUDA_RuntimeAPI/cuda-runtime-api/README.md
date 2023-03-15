@@ -312,12 +312,3 @@ void warp_affine_bilinear(
     );
 }
 ```
-
-# 5. 拆解代码
-![在这里插入图片描述](https://img-blog.csdnimg.cn/78757ec84cba4aa9a85a01e87885c418.png)
-
-首先我们是在Host上，在CPU上有两个指针，两个图像大小的内存(Src, dest)，初始化是空指针
-
-然后用cudaMalloc()指向两个GPU上的内存并且返回指针，这两个指针还在CPU上，这两个内存, 用cudaMemcpy()把CPU上的图像复制到GPU上去
-
-

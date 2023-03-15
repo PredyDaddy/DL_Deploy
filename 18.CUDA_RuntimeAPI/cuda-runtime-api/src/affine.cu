@@ -148,7 +148,7 @@ __global__ void warp_affine_bilinear_kernel(
     float c0 = fill_value, c1 = fill_value, c2 = fill_value;
     float src_x = 0;
     float src_y = 0;
-    affine_project(matrix.d2i, dx, dy, &src_x, &src_y);
+    affine_project(matrix.d2i, dx, dy, &src_x, &src_y); // 映射成原始图的大小
 
     /*
     建议先阅读代码，若有疑问，可点击抖音短视频进行辅助讲解(建议1.5倍速观看)
@@ -209,9 +209,21 @@ __global__ void warp_affine_bilinear_kernel(
 
 void warp_affine_bilinear(
     /*
-    建议先阅读代码，若有疑问，可点击抖音短视频进行辅助讲解(建议1.5倍速观看)
-        - https://v.douyin.com/Nhre7fV/
+    原图参数:
+    *src: 原图指针
+    src_line_size: 原图每行的字节数  image.cols * 3
+    src_width: 原图宽               image.cols
+    src_height: 原图高              image.rows
+
+    目标图像参数:
+    *dst: 目标图指针
+    dst_line_size: 目标图每行字节数 size.width * 3
+    dst_width: 目标图宽
+    dst_height: 目标图高
+
+    fill_value: 仿射变换完其他地方需要填充的东西
      */
+
     uint8_t *src, int src_line_size, int src_width, int src_height,
     uint8_t *dst, int dst_line_size, int dst_width, int dst_height,
     uint8_t fill_value)
@@ -219,7 +231,7 @@ void warp_affine_bilinear(
     // 2D layout
     // 2个1D layout
     dim3 block_size(32, 32);                                       // blocksize最大就是1024，这里用2d来看更好理解
-    dim3 grid_size((dst_width + 31) / 32, (dst_height + 31) / 32); // 目标图像
+    dim3 grid_size((dst_width + 31) / 32, (dst_height + 31) / 32); // 目标图像dst_width * dst_height
     AffineMatrix affine;
     affine.compute(Size(src_width, src_height), Size(dst_width, dst_height));
 
