@@ -1,4 +1,3 @@
-
 #include <cuda_runtime.h>
 
 #define min(a, b) ((a) < (b) ? (a) : (b))
@@ -56,6 +55,7 @@ struct AffineMatrix
         omat[5] = b2;
     }
 
+    // affine.compute(Size(src_width, src_height), Size(dst_width, dst_height));
     void compute(const Size &from, const Size &to)
     {
         float scale_x = to.width / (float)from.width;
@@ -135,61 +135,76 @@ __global__ void warp_affine_bilinear_kernel(
     uint8_t *dst, int dst_line_size, int dst_width, int dst_height,
     uint8_t fill_value, AffineMatrix matrix)
 {
-
-    /*
-    建议先阅读代码，若有疑问，可点击抖音短视频进行辅助讲解(建议1.5倍速观看)
-        - https://v.douyin.com/Nhr4vTF/
-     */
-
+    // 2个1D的  block维度 * block索引 * 线程所在维度的索引
     int dx = blockDim.x * blockIdx.x + threadIdx.x;
     int dy = blockDim.y * blockIdx.y + threadIdx.y;
-    if (dx >= dst_width || dy >= dst_height)
-        return;
 
-    float c0 = fill_value, c1 = fill_value, c2 = fill_value;
+    // 如果启动的线程索引超过了图像, 直接return
+    if (dx > dst_width || dy > dst_height)
+    {
+        return;
+    }
+
+    // 定义fill value, 因为这里的fill value是main函数传进来的
+    float c0 = fill_value;
+    float c1 = fill_value;
+    float c2 = fill_value;
+
+    // 定义src_x, src_y 用与affine_project返回的
+    // 通过dx, dy 线程索引返回src_x, src_y的值
+    // 这一步的操作就是获得src_x, src_y
+    // matrix.d2i 是inverse mapping, 用于从目标图像的坐标反向计算出原图像上的坐标
     float src_x = 0;
     float src_y = 0;
     affine_project(matrix.d2i, dx, dy, &src_x, &src_y);
 
-    /*
-    建议先阅读代码，若有疑问，可点击抖音短视频进行辅助讲解(建议1.5倍速观看)
-        - 双线性理论讲解：https://v.douyin.com/NhrH2tb/
-        - 代码代码：https://v.douyin.com/NhrBqpc/
-     */
+    // 这里开始进行双线性插值
     if (src_x < -1 || src_x >= src_width || src_y < -1 || src_y >= src_height)
     {
-        // out of range
-        // src_x < -1时，其高位high_x < 0，超出范围
-        // src_x >= -1时，其高位high_x >= 0，存在取值
+        /*
+        out of range 超出边界了，这里注意的一点是x_low, y_low是可以取到-1
+        [-1, src_width] 这个区间x是有取值的
+        [-1, src_height] 这个区间的y是有取值的
+        */
     }
-    else
-    {
+    else{
+        // 找到最近四个点的坐标
         int y_low = floorf(src_y);
         int x_low = floorf(src_x);
         int y_high = y_low + 1;
         int x_high = x_low + 1;
 
         uint8_t const_values[] = {fill_value, fill_value, fill_value};
+
+        // 4 个数值都写出来
         float ly = src_y - y_low;
         float lx = src_x - x_low;
-        float hy = 1 - ly;
+        float hy = 1 - ly;    // 上面算出来的是相对位置，这边直接减就可以了
         float hx = 1 - lx;
-        float w1 = hy * hx, w2 = hy * lx, w3 = ly * hx, w4 = ly * lx;
+        
+        // 定义4个面积, 用于双线性插值的计算
+        float w1 = hy * hx;
+        float w2 = hy * lx;
+        float w3 = ly * hx;
+        float w4 = ly * lx;
+
+        // 先给4个点赋予上初始值
         uint8_t *v1 = const_values;
         uint8_t *v2 = const_values;
         uint8_t *v3 = const_values;
         uint8_t *v4 = const_values;
-        if (y_low >= 0)
-        {
-            if (x_low >= 0)
+
+        // 这里计算v1, v2, v3, v4的地址
+        if (y_low >= 0){
+            if (x_low >= 0){
+                // 这里的src_line_size 在从main.cpp传入进来的时候就已经 * 3 
                 v1 = src + y_low * src_line_size + x_low * 3;
-
-            if (x_high < src_width)
+            }
+            if (x_high < src_width){
                 v2 = src + y_low * src_line_size + x_high * 3;
+            }   
         }
-
-        if (y_high < src_height)
-        {
+        if(y_high < src_height){
             if (x_low >= 0)
                 v3 = src + y_high * src_line_size + x_low * 3;
 
@@ -197,15 +212,19 @@ __global__ void warp_affine_bilinear_kernel(
                 v4 = src + y_high * src_line_size + x_high * 3;
         }
 
+        // 计算双线性插值
         c0 = floorf(w1 * v1[0] + w2 * v2[0] + w3 * v3[0] + w4 * v4[0] + 0.5f);
         c1 = floorf(w1 * v1[1] + w2 * v2[1] + w3 * v3[1] + w4 * v4[1] + 0.5f);
         c2 = floorf(w1 * v1[2] + w2 * v2[2] + w3 * v3[2] + w4 * v4[2] + 0.5f);
     }
 
-    uint8_t *pdst = dst + dy * dst_line_size + dx * 3;
-    pdst[0] = c0;
-    pdst[1] = c1;
-    pdst[2] = c2;
+    // 上面写完了经历了从目标图像找回原始图像坐标
+    // 从原始图像坐标做了个双线性插值，计算了目标图像的色调
+    // 直接去dst图像上修改，这里通过地址去修改
+    uint8_t* pdst = dst + dy * dst_line_size + dx * 3;
+    pdst[0] = c0; pdst[1] = c1; pdst[2] = c2; // RGB
+    pdst[2] = c0; pdst[1] = c1; pdst[0] = c2; // BGR
+
 }
 
 void warp_affine_bilinear(
@@ -235,11 +254,18 @@ void warp_affine_bilinear(
     fill_value: 仿射变换完其他地方需要填充的东西
     */
 
-    dim3 block_size(32, 32); // blocksize最大就是1024，这里用2d来看更好理解
+    // 定义block size, 每一个block里面有32x32个线程块
+    dim3 block_size(32, 32); // blocksize最大就是1024
+
+    // 定义grid_Size, 向上取整确保线程格中包含足够的线程块来覆盖整个图像区域
     dim3 grid_size((dst_width + 31) / 32, (dst_height + 31) / 32);
+
+    // 计算仿射矩阵
     AffineMatrix affine;
+    // Size构建两个结构体传入affine.compute()里面
     affine.compute(Size(src_width, src_height), Size(dst_width, dst_height));
 
+    // 启动核函数实现栓线性插值仿射变换
     warp_affine_bilinear_kernel<<<grid_size, block_size, 0, nullptr>>>(
         src, src_line_size, src_width, src_height,
         dst, dst_line_size, dst_width, dst_height,
