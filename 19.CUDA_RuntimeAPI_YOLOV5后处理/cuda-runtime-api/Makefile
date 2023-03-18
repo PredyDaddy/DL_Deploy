@@ -4,9 +4,9 @@ workdir   := workspace
 srcdir    := src
 objdir    := objs
 stdcpp    := c++11
-cuda_home := /root/anaconda3/envs/torch/lib/python3.7/site-packages/trtpy/trt8cuda115cudnn8
-syslib    := /root/anaconda3/envs/torch/lib/python3.7/site-packages/trtpy/lib
-cpp_pkg   := /root/anaconda3/envs/torch/lib/python3.7/site-packages/trtpy/cpp-packages
+cuda_home := /data/anaconda3/envs/cqy/lib/python3.9/site-packages/trtpy/trt8cuda115cudnn8
+syslib    := /data/anaconda3/envs/cqy/lib/python3.9/site-packages/trtpy/lib
+cpp_pkg   := /data/anaconda3/envs/cqy/lib/python3.9/site-packages/trtpy/cpp-packages
 cuda_arch := 
 nvcc      := $(cuda_home)/bin/nvcc -ccbin=$(cc)
 
