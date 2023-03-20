@@ -139,7 +139,7 @@
 6. 拆解代码
 7. warp_affine_bilinear()详细注释版
 
-# 19. CUDA_RuntimeAPI_CUDA_RuntimeAPI
+# 19. CUDA_RuntimeAPI_CUDA_RuntimeAPI_YOLOV5_CPU_GPU_解码
 1. 知识点和先验知识
 2. kernel函数的简单了解
 3. main.cpp 中的int main()
