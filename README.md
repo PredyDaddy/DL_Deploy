@@ -130,4 +130,13 @@
 3. kernel.cu文件解读
 4. 核函数内部
 
-# 18. 
+# 18. 18.CUDA_RuntimeAPI_Warffine
+1. 仿射变换
+2. 双线性插值
+3. 代码的整体思路
+4. 原版代码main.cpp文件
+5. 原版affine.cu
+6. 拆解代码
+7. warp_affine_bilinear()详细注释版
+
+# 19. 
