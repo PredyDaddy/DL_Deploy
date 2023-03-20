@@ -139,4 +139,15 @@
 6. 拆解代码
 7. warp_affine_bilinear()详细注释版
 
-# 19. 
+# 19. CUDA_RuntimeAPI_CUDA_RuntimeAPI
+1. 知识点和先验知识
+2. kernel函数的简单了解
+3. main.cpp 中的int main()
+4. load_file
+5. cpu decoder
+6. gpu decoder
+7. gpu_decode.cu文件 void decode_kernel_invoker()
+8. kernel函数decode_kernel
+9. fast_nms_kernel
+10. box_iou
+11. 总结
