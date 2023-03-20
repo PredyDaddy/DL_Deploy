@@ -118,3 +118,16 @@
 3. 向量相加相乘的kernel function
 4. 多个流的异步
 5. 多个流之间互相等待的操作
+
+# 16. 16.CUDA_Run_Time_API_vector-add_使用cuda核函数实现向量加法
+1. 知识点
+2. main.cpp文件
+3. 案例.cu文件
+
+# 17.CUDA_RuntimeAPI_reduce-sum_规约求和的实现
+1. 知识点
+2. main.cpp文件详细注释版本
+3. kernel.cu文件解读
+4. 核函数内部
+
+# 18. 
